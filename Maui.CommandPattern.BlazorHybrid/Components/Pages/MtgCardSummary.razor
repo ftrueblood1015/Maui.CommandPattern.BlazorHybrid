@@ -1,0 +1,34 @@
+﻿@page "/mtgcards"
+
+@using Maui.CommandPattern.BlazorHybrid.Components.Pages;
+@using Maui.CommandPattern.BlazorHybrid.Constants;
+@using Maui.CommandPattern.EntityLibrary.Models;
+
+@inherits SummaryPageBase<MtgCard>;
+
+<MudDataGrid @attributes='Splats.DataGrid("MtgCardSummary")' T="MtgCard" MultiSelection="true" Items="Entities" SortMode="SortMode.Multiple"
+             Filterable="true" QuickFilter="@_quickFilter">
+    <ToolBarContent>
+        <MudSpacer />
+        <MudTextField @attributes='Splats.SearchField()' @bind-Value="_searchString" Class="mt-0"></MudTextField>
+        <MudButton @attributes="Splats.NewButton()" class="ml-2" OnClick="@(() => Add(DetailRoute))">Add</MudButton>
+    </ToolBarContent>
+    <Columns>
+        <PropertyColumn Property="x => x.Name" Title="Name" Sortable="false" Filterable="false" />
+        <PropertyColumn Property="x => x.Color" />
+        <PropertyColumn Property="x => x.Type" />
+        <PropertyColumn Property="x => x.MtgSet!.Name" Title="Set"/>
+        <PropertyColumn Property="x => x.IsActive" />
+        <TemplateColumn CellClass="d-flex justify-end">
+            <CellTemplate>
+                <MudStack Row>
+                    <MudButton @attributes="Splats.DeleteButton()" Size="@Size.Small" OnClick="@(() => OnDeleteClicked(context.Item))">Delete</MudButton>
+                    <MudButton @attributes="Splats.EditButton()" Size="@Size.Small" OnClick="@(() => Edit(context.Item, DetailRoute))">Edit</MudButton>
+                </MudStack>
+            </CellTemplate>
+        </TemplateColumn>
+    </Columns>
+    <PagerContent>
+        <MudDataGridPager T="MtgCard" />
+    </PagerContent>
+</MudDataGrid>

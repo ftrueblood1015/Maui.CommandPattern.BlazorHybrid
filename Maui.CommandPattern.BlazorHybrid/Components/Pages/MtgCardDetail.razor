@@ -1,0 +1,32 @@
+﻿@page "/mtgcard"
+@page "/mtgcard/{EntityId:int}"
+
+@using Maui.CommandPattern.BlazorHybrid.Components.Pages;
+@using Maui.CommandPattern.BlazorHybrid.Constants;
+@using Maui.CommandPattern.EntityLibrary.Models;
+
+@inherits DetailPageBase<MtgCard>;
+
+<MudText @attributes='Splats.PageHeader("MtgCardDetail")'>MtgCardDetail</MudText>
+
+<MudForm @ref="Form" @bind-IsValid="@success">
+    <MudPaper Class="pa-4">
+        <ModelBaseForm ModelBase="@Entity"></ModelBaseForm>
+        <MudGrid>
+            <MudItem xs="12" md="12" lg="12">
+                <BaseModelSelect T="MtgSet" Title="Set" BoundValue="Entity!.MtgSetId" HandleChange="SetChange"></BaseModelSelect>
+            </MudItem>
+            <MudItem xs="12" md="12" lg="12">
+                <MudTextField @bind-Value="Entity!.Type" @attributes="@Splats.TextRequired(nameof(Entity.Type))" For="@(() => Entity!.Type)" />
+            </MudItem>
+            <MudItem xs="12" md="12" lg="12">
+                <MudTextField @bind-Value="Entity!.Color" @attributes="@Splats.TextRequired(nameof(Entity.Color))" For="@(() => Entity!.Color)" />
+            </MudItem>
+        </MudGrid>
+    </MudPaper>
+    <MudPaper Class="pa-4">
+        <MudButton @attributes="Splats.NewButton()" OnClick="@(() => Save(Entity!, "mtgcards"))">Save</MudButton>
+        <MudButton @attributes="Splats.ResetButton()" OnClick="@(()=>Form!.ResetAsync())" Class="mx-2">Reset</MudButton>
+        <MudButton @attributes="Splats.CancelButton()" OnClick="@(() => Cancel("mtgcards"))">Cancel</MudButton>
+    </MudPaper>
+</MudForm>

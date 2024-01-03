@@ -1,0 +1,19 @@
+﻿@using Maui.CommandPattern.EntityLibrary.Models;
+@using Maui.CommandPattern.BlazorHybrid.Constants;
+
+<MudGrid>
+    <MudItem xs="12" md="12" lg="12">
+        <MudCheckBox @bind-Value="ModelBase.IsActive" @attributes="@Splats.CheckBox(nameof(ModelBase.IsActive))" For="@(() => ModelBase.IsActive)" />
+    </MudItem>
+    <MudItem xs="12" md="12" lg="12">
+        <MudTextField @bind-Value="ModelBase.Name" @attributes="@Splats.TextRequired(nameof(ModelBase.Name))" For="@(() => ModelBase.Name)" />
+    </MudItem>
+    <MudItem xs="12" md="12" lg="12">
+        <MudTextField @bind-Value="ModelBase.Description" @attributes="@Splats.TextRequired(nameof(ModelBase.Description))" For="@(() => ModelBase.Description)" />
+    </MudItem>
+</MudGrid>
+
+@code {
+    [Parameter]
+    public ModelBase ModelBase { get; set; } = new();
+}

@@ -1,0 +1,51 @@
+﻿@using Maui.CommandPattern.BlazorHybrid.Constants;
+@using Maui.CommandPattern.BlazorHybrid.Services;
+@using Maui.CommandPattern.EntityLibrary.Models;
+@typeparam T where T : ModelBase
+
+<MudSelect @attributes="Splats.SelectRequired(Title!)" T="int?" Label="@Title" ValueChanged="value => EntityValueChanged(value)" Value="@BoundValue">
+    @if (Entities != null)
+    {
+        @foreach (var entity in Entities)
+        {
+            <MudSelectItem T="int?" Value="@entity.Id">@entity.Name</MudSelectItem>
+        }
+    }
+</MudSelect>
+
+@code {
+    [Inject]
+    private IServiceBase<T>? Service { get; set; }
+
+    [Parameter]
+    public string? Title { get; set; }
+
+    [Parameter]
+    public int? BoundValue { get; set; }
+
+    [Parameter]
+    public EventCallback<int?> HandleChange { get; set; }
+
+    public List<T>? Entities { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        GetData();
+    }
+
+    public void GetData()
+    {
+        if (Service == null)
+        {
+            throw new Exception($"{nameof(Service)}  is null!");
+        }
+        var Response = Service.GetAll();
+        Entities = Response != null ? Response.ToList() : new List<T>();
+        StateHasChanged();
+    }
+
+    public void EntityValueChanged(int? value)
+    {
+        HandleChange.InvokeAsync(value);
+    }
+}

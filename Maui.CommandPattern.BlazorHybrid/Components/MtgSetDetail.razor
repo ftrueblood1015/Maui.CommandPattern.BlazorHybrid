@@ -1,0 +1,26 @@
+﻿@page "/mtgset"
+@page "/mtgset/{EntityId:int}"
+
+@using Maui.CommandPattern.BlazorHybrid.Components.Pages;
+@using Maui.CommandPattern.BlazorHybrid.Constants;
+@using Maui.CommandPattern.EntityLibrary.Models;
+
+@inherits DetailPageBase<MtgSet>;
+
+<MudText @attributes='Splats.PageHeader("MtgSetDetail")'>MtgSetDetail</MudText>
+
+<MudForm @ref="Form" @bind-IsValid="@success">
+    <MudPaper Class="pa-4">
+        <ModelBaseForm ModelBase="@Entity"></ModelBaseForm>
+        <MudGrid>
+            <MudItem xs="12" md="12" lg="12">
+                <MudNumericField @bind-Value="@Entity!.ReleaseYear" @attributes='Splats.NumericRequired("ReleaseYear")' />
+            </MudItem>
+        </MudGrid>
+    </MudPaper>
+    <MudPaper Class="pa-4">
+        <MudButton @attributes="Splats.NewButton()" OnClick="@(() => Save(Entity!, "mtgsets"))">Save</MudButton>
+        <MudButton @attributes="Splats.ResetButton()" OnClick="@(()=>Form!.ResetAsync())" Class="mx-2">Reset</MudButton>
+        <MudButton @attributes="Splats.CancelButton()" OnClick="@(() => Cancel("mtgsets"))">Cancel</MudButton>
+    </MudPaper>
+</MudForm>
